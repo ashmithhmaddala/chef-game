@@ -1,0 +1,37 @@
+{
+  "name": "time-chef-challenge",
+  "version": "1.0.0",
+  "description": "An innovative cooking game that combines time management, ingredient matching, and strategic power-ups",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build step required - static files only'",
+    "deploy": "echo 'Deploy to GitHub Pages via GitHub Actions'"
+  },
+  "keywords": [
+    "game",
+    "cooking",
+    "puzzle",
+    "time-management",
+    "browser-game",
+    "javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "Hemal Singh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/time-chef-challenge.git"
+  },
+  "homepage": "https://hemalsingh.tech",
+  "bugs": {
+    "url": "https://github.com/yourusername/time-chef-challenge/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

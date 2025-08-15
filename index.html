@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Time Chef Challenge - Master the Art of Cooking Under Pressure
+    </title>
+    <meta
+      name="description"
+      content="Play Time Chef Challenge - an innovative cooking game that combines time management, ingredient matching, and strategic power-ups. Master the art of cooking under pressure!"
+    />
+    <meta
+      name="keywords"
+      content="cooking game, time management, puzzle game, chef game, food game, browser game"
+    />
+    <meta name="author" content="Hemal Singh" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hemalsingh.tech/" />
+    <meta property="og:title" content="Time Chef Challenge" />
+    <meta
+      property="og:description"
+      content="Master the art of cooking under pressure in this innovative culinary game!"
+    />
+    <meta property="og:image" content="https://hemalsingh.tech/og-image.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://hemalsingh.tech/" />
+    <meta property="twitter:title" content="Time Chef Challenge" />
+    <meta
+      property="twitter:description"
+      content="Master the art of cooking under pressure in this innovative culinary game!"
+    />
+    <meta
+      property="twitter:image"
+      content="https://hemalsingh.tech/og-image.png"
+    />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#f2751a" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#fef7ee",
+                100: "#fdedd6",
+                200: "#fbd7ac",
+                300: "#f8bb77",
+                400: "#f59540",
+                500: "#f2751a",
+                600: "#e35d10",
+                700: "#bc4510",
+                800: "#963714",
+                900: "#792f14",
+              },
+              royal: {
+                50: "#fdf2f8",
+                100: "#fce7f3",
+                200: "#fbcfe8",
+                300: "#f9a8d4",
+                400: "#f472b6",
+                500: "#ec4899",
+                600: "#db2777",
+                700: "#be185d",
+                800: "#9d174d",
+                900: "#831843",
+              },
+            },
+            animation: {
+              float: "float 3s ease-in-out infinite",
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 2s infinite",
+              gradient: "gradient 8s ease infinite",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0px)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              gradient: {
+                "0%, 100%": { backgroundPosition: "0% 50%" },
+                "50%": { backgroundPosition: "100% 50%" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .bg-gradient-animate {
+        background-size: 200% 200%;
+        animation: gradient 8s ease infinite;
+      }
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .hemal-special {
+        background: linear-gradient(135deg, #ec4899, #f472b6, #fbbf24);
+        background-size: 200% 200%;
+        animation: gradient 3s ease infinite;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen"
+  >
+    <div id="game-container" class="w-full max-w-7xl mx-auto h-screen relative">
+      <!-- Notification Container -->
+      <div
+        id="notification-container"
+        class="fixed top-4 right-4 z-50 space-y-2"
+      ></div>
+
+      <!-- Authentication Screen -->
+      <div
+        id="auth-screen"
+        class="screen absolute inset-0 flex items-center justify-center p-6"
+      >
+        <div class="glass rounded-2xl p-8 w-full max-w-md">
+          <div class="text-center mb-8">
+            <h1
+              class="text-4xl font-bold bg-gradient-to-r from-primary-400 to-royal-400 bg-clip-text text-transparent mb-2"
+            >
+              Time Chef Challenge
+            </h1>
+            <p class="text-slate-300">
+              Master the art of cooking under pressure
+            </p>
+          </div>
+
+          <div class="bg-white/10 rounded-xl p-6 mb-6">
+            <div class="flex rounded-lg overflow-hidden mb-6">
+              <button
+                class="auth-tab flex-1 py-3 px-4 text-sm font-medium text-slate-300 bg-white/5 transition-all duration-200"
+                data-tab="login"
+              >
+                Sign In
+              </button>
+              <button
+                class="auth-tab flex-1 py-3 px-4 text-sm font-medium text-slate-300 bg-white/5 transition-all duration-200"
+                data-tab="register"
+              >
+                Sign Up
+              </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form space-y-4">
+              <input
+                type="text"
+                id="login-username"
+                placeholder="Username"
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all"
+              />
+              <input
+                type="password"
+                id="login-password"
+                placeholder="Password"
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all"
+              />
+              <button
+                type="button"
+                id="login-btn"
+                class="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200 transform hover:scale-105"
+              >
+                Sign In
+              </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form hidden space-y-4">
+              <input
+                type="text"
+                id="register-username"
+                placeholder="Username"
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all"
+              />
+              <input
+                type="email"
+                id="register-email"
+                placeholder="Email"
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all"
+              />
+              <input
+                type="password"
+                id="register-password"
+                placeholder="Password"
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all"
+              />
+              <input
+                type="password"
+                id="register-confirm"
+                placeholder="Confirm Password"
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all"
+              />
+              <button
+                type="button"
+                id="register-btn"
+                class="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200 transform hover:scale-105"
+              >
+                Sign Up
+              </button>
+            </form>
+          </div>
+
+          <button
+            id="guest-play"
+            class="w-full bg-white/10 text-white py-3 px-4 rounded-lg font-medium hover:bg-white/20 transition-all duration-200"
+          >
+            Play as Guest
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Menu -->
+      <div id="main-menu" class="screen absolute inset-0 hidden">
+        <div class="h-full flex flex-col">
+          <!-- Header -->
+          <div class="glass rounded-b-3xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <div
+                  class="w-12 h-12 bg-gradient-to-r from-primary-500 to-royal-500 rounded-full flex items-center justify-center text-white text-xl font-bold"
+                  id="user-avatar"
+                >
+                  👨‍🍳
+                </div>
+                <div>
+                  <h2 class="text-white font-semibold text-lg" id="user-name">
+                    Chef
+                  </h2>
+                  <p class="text-slate-300 text-sm" id="user-level">
+                    Level 1 • 0 XP
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-6">
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Total Score</p>
+                  <p class="text-white font-bold" id="total-score">0</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Best Combo</p>
+                  <p class="text-white font-bold" id="best-combo">0</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Achievements</p>
+                  <p class="text-white font-bold" id="achievements-count">0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Content -->
+          <div class="flex-1 flex items-center justify-center px-6">
+            <div class="text-center max-w-2xl">
+              <h1
+                class="text-6xl font-bold bg-gradient-to-r from-primary-400 via-royal-400 to-primary-400 bg-clip-text text-transparent mb-4 animate-gradient"
+              >
+                Time Chef Challenge
+              </h1>
+              <p class="text-slate-300 text-xl mb-12">
+                Master the art of cooking under pressure
+              </p>
+
+              <div class="space-y-4">
+                <button
+                  id="start-game"
+                  class="w-full max-w-md bg-gradient-to-r from-primary-500 to-primary-600 text-white py-4 px-8 rounded-xl font-semibold text-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  🍳 Start Cooking
+                </button>
+
+                <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                  <button
+                    id="how-to-play"
+                    class="bg-white/10 text-white py-3 px-6 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+                  >
+                    📖 How to Play
+                  </button>
+                  <button
+                    id="achievements"
+                    class="bg-white/10 text-white py-3 px-6 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+                  >
+                    🏆 Achievements
+                  </button>
+                  <button
+                    id="leaderboard"
+                    class="bg-white/10 text-white py-3 px-6 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+                  >
+                    📊 Leaderboard
+                  </button>
+                  <button
+                    id="shop"
+                    class="bg-white/10 text-white py-3 px-6 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+                  >
+                    🛒 Shop
+                  </button>
+                </div>
+
+                <button
+                  id="profile"
+                  class="bg-white/10 text-white py-3 px-8 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+                >
+                  👤 Profile
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex flex-col">
+          <!-- Game Header -->
+          <div class="glass rounded-b-3xl p-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-8">
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Score</p>
+                  <p class="text-white font-bold text-xl" id="score">0</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Level</p>
+                  <p class="text-white font-bold text-xl" id="level">1</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Combo</p>
+                  <p class="text-white font-bold text-xl" id="combo-display">
+                    0
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Recipes</p>
+                  <p
+                    class="text-white font-bold text-xl"
+                    id="recipes-completed"
+                  >
+                    0/10
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-4">
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm">Time</p>
+                  <div class="flex items-center space-x-2">
+                    <div
+                      class="w-32 h-2 bg-white/20 rounded-full overflow-hidden"
+                    >
+                      <div
+                        id="timer-fill"
+                        class="h-full bg-gradient-to-r from-green-400 to-green-500 transition-all duration-300"
+                        style="width: 100%"
+                      ></div>
+                    </div>
+                    <span class="text-white font-bold" id="time-left">60</span>
+                  </div>
+                </div>
+
+                <div class="flex space-x-2">
+                  <button
+                    id="freeze-time"
+                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-200 relative"
+                  >
+                    ⏸️
+                    <span
+                      id="freeze-count"
+                      class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                      >3</span
+                    >
+                  </button>
+                  <button
+                    id="hint"
+                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-200 relative"
+                  >
+                    💡
+                    <span
+                      id="hint-count"
+                      class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                      >5</span
+                    >
+                  </button>
+                  <button
+                    id="combo-boost"
+                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-200 relative"
+                  >
+                    🔥
+                    <span
+                      id="combo-count"
+                      class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                      >2</span
+                    >
+                  </button>
+                  <button
+                    id="double-points"
+                    class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-200 relative"
+                  >
+                    ⚡
+                    <span
+                      id="double-count"
+                      class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                      >1</span
+                    >
+                  </button>
+                </div>
+
+                <div class="flex space-x-2">
+                  <button
+                    id="pause-game"
+                    class="bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-all duration-200"
+                  >
+                    ⏸️ Pause
+                  </button>
+                  <button
+                    id="quit-game"
+                    class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-all duration-200"
+                  >
+                    ❌ Quit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Area -->
+          <div class="flex-1 p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+              <!-- Recipe Display -->
+              <div class="glass rounded-2xl p-6">
+                <h3 class="text-white font-semibold text-lg mb-4 text-center">
+                  Current Recipe
+                </h3>
+                <div class="bg-white/10 rounded-xl p-4">
+                  <h4
+                    class="recipe-name text-white font-bold text-lg mb-3 text-center"
+                  >
+                    🍕 Margherita Pizza
+                  </h4>
+                  <div
+                    class="recipe-ingredients flex flex-wrap gap-2 justify-center mb-4"
+                  >
+                    <span
+                      class="ingredient-tag bg-white/20 text-white px-3 py-1 rounded-full text-sm"
+                      >🍅</span
+                    >
+                    <span
+                      class="ingredient-tag bg-white/20 text-white px-3 py-1 rounded-full text-sm"
+                      >🧀</span
+                    >
+                    <span
+                      class="ingredient-tag bg-white/20 text-white px-3 py-1 rounded-full text-sm"
+                      >🌿</span
+                    >
+                  </div>
+                  <div
+                    class="difficulty-stars text-center text-yellow-400 text-lg"
+                  >
+                    ⭐⭐⭐
+                  </div>
+                  <div class="mt-4">
+                    <p class="text-slate-300 text-sm mb-2">Progress</p>
+                    <div
+                      class="w-full h-2 bg-white/20 rounded-full overflow-hidden"
+                    >
+                      <div
+                        id="recipe-progress-fill"
+                        class="h-full bg-gradient-to-r from-primary-400 to-royal-400 transition-all duration-300"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ingredients Grid -->
+              <div class="glass rounded-2xl p-6">
+                <h3 class="text-white font-semibold text-lg mb-4 text-center">
+                  Ingredients
+                </h3>
+                <div
+                  id="ingredients-container"
+                  class="grid grid-cols-4 gap-3 max-h-96 overflow-y-auto"
+                >
+                  <!-- Ingredients will be generated here -->
+                </div>
+              </div>
+
+              <!-- Cooking Station -->
+              <div class="glass rounded-2xl p-6">
+                <h3 class="text-white font-semibold text-lg mb-4 text-center">
+                  Cooking Pot
+                </h3>
+                <div class="text-center">
+                  <div
+                    class="pot-content w-32 h-32 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mx-auto mb-4 flex items-center justify-center relative"
+                  >
+                    <div
+                      id="cooked-ingredients"
+                      class="flex flex-wrap gap-1 justify-center"
+                    >
+                      <!-- Selected ingredients will appear here -->
+                    </div>
+                  </div>
+                  <button
+                    id="cook-recipe"
+                    disabled
+                    class="w-full bg-slate-500 text-white py-3 px-6 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-600 transition-all duration-200"
+                  >
+                    🍳 Cook Recipe
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pause Screen -->
+      <div id="pause-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center">
+          <div class="glass rounded-2xl p-8 text-center">
+            <h2 class="text-white text-3xl font-bold mb-8">Game Paused</h2>
+            <div class="space-y-4">
+              <button
+                id="resume-game"
+                class="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
+              >
+                ▶️ Resume Game
+              </button>
+              <button
+                id="restart-game"
+                class="w-full bg-white/10 text-white py-3 px-6 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+              >
+                🔄 Restart Game
+              </button>
+              <button
+                id="quit-to-menu"
+                class="w-full bg-red-500/20 text-red-400 py-3 px-6 rounded-xl font-medium hover:bg-red-500/30 transition-all duration-200"
+              >
+                🏠 Quit to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Over Screen -->
+      <div id="game-over-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center p-6">
+          <div class="glass rounded-2xl p-8 max-w-2xl w-full">
+            <div class="text-center mb-8">
+              <h2 class="text-white text-4xl font-bold mb-4">Game Over!</h2>
+              <div
+                class="bg-gradient-to-r from-primary-500 to-royal-500 rounded-xl p-6 mb-6"
+              >
+                <p class="text-white text-2xl font-bold mb-2">
+                  Final Score: <span id="final-score">0</span>
+                </p>
+                <p class="text-white/80">
+                  Level <span id="final-level">1</span> • Combo
+                  <span id="final-combo">0</span> • Recipes
+                  <span id="final-recipes">0</span>
+                </p>
+              </div>
+
+              <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="bg-white/10 rounded-lg p-4">
+                  <p class="text-slate-300 text-sm">Coins Earned</p>
+                  <p
+                    class="text-yellow-400 font-bold text-xl"
+                    id="coins-earned"
+                  >
+                    +0
+                  </p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4">
+                  <p class="text-slate-300 text-sm">Gems Earned</p>
+                  <p class="text-purple-400 font-bold text-xl" id="gems-earned">
+                    +0
+                  </p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4">
+                  <p class="text-slate-300 text-sm">XP Earned</p>
+                  <p class="text-green-400 font-bold text-xl" id="xp-earned">
+                    +0 XP
+                  </p>
+                </div>
+              </div>
+
+              <div id="achievements-unlocked" class="mb-6">
+                <!-- Achievements will be displayed here -->
+              </div>
+
+              <div class="space-y-4">
+                <button
+                  id="play-again"
+                  class="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
+                >
+                  🎮 Play Again
+                </button>
+                <button
+                  id="back-to-main"
+                  class="w-full bg-white/10 text-white py-3 px-6 rounded-xl font-medium hover:bg-white/20 transition-all duration-200"
+                >
+                  🏠 Back to Menu
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to Play Screen -->
+      <div id="how-to-play-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center p-6">
+          <div
+            class="glass rounded-2xl p-8 max-w-4xl w-full max-h-full overflow-y-auto"
+          >
+            <div class="text-center mb-8">
+              <h2 class="text-white text-3xl font-bold mb-4">How to Play</h2>
+              <p class="text-slate-300">
+                Master the art of cooking under pressure!
+              </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+              <div class="bg-white/10 rounded-xl p-6">
+                <div class="text-3xl mb-4">🎯</div>
+                <h3 class="text-white font-semibold text-lg mb-2">
+                  Match Ingredients
+                </h3>
+                <p class="text-slate-300">
+                  Click on ingredients to match the recipe requirements. Select
+                  the exact ingredients needed!
+                </p>
+              </div>
+              <div class="bg-white/10 rounded-xl p-6">
+                <div class="text-3xl mb-4">⏰</div>
+                <h3 class="text-white font-semibold text-lg mb-2">
+                  Beat the Clock
+                </h3>
+                <p class="text-slate-300">
+                  Complete recipes before time runs out. Each successful recipe
+                  adds time to your clock!
+                </p>
+              </div>
+              <div class="bg-white/10 rounded-xl p-6">
+                <div class="text-3xl mb-4">🔥</div>
+                <h3 class="text-white font-semibold text-lg mb-2">
+                  Build Combos
+                </h3>
+                <p class="text-slate-300">
+                  Chain successful recipes to build combos and earn bonus
+                  points!
+                </p>
+              </div>
+              <div class="bg-white/10 rounded-xl p-6">
+                <div class="text-3xl mb-4">⚡</div>
+                <h3 class="text-white font-semibold text-lg mb-2">
+                  Use Power-ups
+                </h3>
+                <p class="text-slate-300">
+                  Freeze time, get hints, boost combos, and double your points
+                  with special power-ups!
+                </p>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button
+                id="back-to-menu"
+                class="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-8 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
+              >
+                🏠 Back to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements Screen -->
+      <div id="achievements-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center p-6">
+          <div
+            class="glass rounded-2xl p-8 max-w-6xl w-full max-h-full overflow-y-auto"
+          >
+            <div class="text-center mb-8">
+              <h2 class="text-white text-3xl font-bold mb-4">Achievements</h2>
+              <p class="text-slate-300">
+                Unlock achievements and prove your culinary skills!
+              </p>
+            </div>
+
+            <div
+              id="achievements-container"
+              class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
+            >
+              <!-- Achievements will be generated here -->
+            </div>
+
+            <div class="text-center">
+              <button
+                id="back-to-menu-achievements"
+                class="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-8 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
+              >
+                🏠 Back to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leaderboard Screen -->
+      <div id="leaderboard-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center p-6">
+          <div
+            class="glass rounded-2xl p-8 max-w-4xl w-full max-h-full overflow-y-auto"
+          >
+            <div class="text-center mb-8">
+              <h2 class="text-white text-3xl font-bold mb-4">Leaderboard</h2>
+              <p class="text-slate-300">
+                See how you rank against other chefs!
+              </p>
+            </div>
+
+            <div id="leaderboard-container" class="space-y-3 mb-8">
+              <!-- Leaderboard items will be generated here -->
+            </div>
+
+            <div class="text-center">
+              <button
+                id="back-to-menu-leaderboard"
+                class="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-8 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
+              >
+                🏠 Back to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop Screen -->
+      <div id="shop-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center p-6">
+          <div
+            class="glass rounded-2xl p-8 max-w-6xl w-full max-h-full overflow-y-auto"
+          >
+            <div class="text-center mb-8">
+              <h2 class="text-white text-3xl font-bold mb-4">Shop</h2>
+              <div class="flex justify-center space-x-6 mb-6">
+                <div
+                  class="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full px-6 py-2"
+                >
+                  <span class="text-white font-bold"
+                    >💰 <span id="user-coins">100</span></span
+                  >
+                </div>
+                <div
+                  class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-full px-6 py-2"
+                >
+                  <span class="text-white font-bold"
+                    >💎 <span id="user-gems">10</span></span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-center space-x-4 mb-6">
+              <button
+                class="shop-category bg-primary-500 text-white px-6 py-2 rounded-lg font-medium"
+                data-category="powerups"
+              >
+                Power-ups
+              </button>
+              <button
+                class="shop-category bg-white/10 text-white px-6 py-2 rounded-lg font-medium hover:bg-white/20"
+                data-category="skins"
+              >
+                Skins
+              </button>
+              <button
+                class="shop-category bg-white/10 text-white px-6 py-2 rounded-lg font-medium hover:bg-white/20"
+                data-category="recipes"
+              >
+                Recipes
+              </button>
+            </div>
+
+            <div
+              id="shop-container"
+              class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
+            >
+              <!-- Shop items will be generated here -->
+            </div>
+
+            <div class="text-center">
+              <button
+                id="back-to-menu-shop"
+                class="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-8 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200"
+              >
+                🏠 Back to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Screen -->
+      <div id="profile-screen" class="screen absolute inset-0 hidden">
+        <div class="h-full flex items-center justify-center p-6">
+          <div
+            class="glass rounded-2xl p-8 max-w-4xl w-full max-h-full overflow-y-auto"
+          >
+            <div class="text-center mb-8">
+              <h2 class="text-white text-3xl font-bold mb-4">Profile</h2>
+            </div>
+
+            <div class="bg-white/10 rounded-xl p-6 mb-8">
+              <div class="flex items-center justify-center mb-6">
+                <div
+                  class="w-24 h-24 bg-gradient-to-r from-primary-500 to-royal-500 rounded-full flex items-center justify-center text-white text-4xl font-bold mr-6"
+                  id="profile-avatar"
+                >
+                  👨‍🍳
+                </div>
+                <div class="text-left">
+                  <h3
+                    class="text-white font-bold text-2xl mb-2"
+                    id="profile-name"
+                  >
+                    Chef
+                  </h3>
+                  <p class="text-slate-300 text-lg" id="profile-title">
+                    Novice Chef
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-3 gap-6">
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm mb-1">Games Played</p>
+                  <p class="text-white font-bold text-xl" id="games-played">
+                    0
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm mb-1">Total Score</p>
+                  <p
+                    class="text-white font-bold text-xl"
+                    id="total-games-score"
+                  >
+                    0
+                  </p>
+                </div>
+                <div class="text-center">
+                  <p class="text-slate-300 text-sm mb-1">Best Combo</p>
+                  <p class="text-white font-bold text-xl" id="best-games-combo">
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button
+                id="logout"
+                class="bg-red-500/20 text-red-400 py-3 px-8 rounded-xl font-medium hover:bg-red-500/30 transition-all duration-200"
+              >
+                🚪 Logout
+              </button>
+              <button
+                id="back-to-menu-profile"
+                class="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-3 px-8 rounded-xl font-semibold hover:from-primary-600 hover:to-primary-700 transition-all duration-200 ml-4"
+              >
+                🏠 Back to Menu
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script>
+      // Register service worker for PWA functionality
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
