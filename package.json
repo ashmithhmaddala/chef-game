@@ -23,11 +23,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/time-chef-challenge.git"
+    "url": "https://github.com/ashmithhmaddala/chef-game.git"
   },
   "homepage": "https://hemalsingh.tech",
   "bugs": {
-    "url": "https://github.com/yourusername/time-chef-challenge/issues"
+    "url": "https://github.com/ashmithhmaddala/chef-game/issues"
   },
   "engines": {
     "node": ">=14.0.0"
